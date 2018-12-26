@@ -1,0 +1,3 @@
+﻿1>------ Rebuild All started: Project: BaseClassCS, Configuration: Release Any CPU ------
+1>  BaseClassCS -> C:\Users\mif\Source\Workspaces\myBaseClass\BaseClassC\bin\Release\MyBaseClassC.dll
+========== Rebuild All: 1 succeeded, 0 failed, 0 skipped ==========
