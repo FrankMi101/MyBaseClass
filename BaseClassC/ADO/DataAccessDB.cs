@@ -6,7 +6,7 @@ using System.Data.OleDb;
 //using System.Security;
 //using Microsoft.Win32;
 //using System.Data;
-namespace MyCommon
+namespace MyADO
 {
     public struct MyParameterDB
     {
@@ -61,6 +61,40 @@ namespace MyCommon
 
             }
 
+        }
+
+        private static  System.Data.DataSet myDataSetMethod()
+        {
+            string ConntionSTR = "Data Source=localhost;Initial Catalog=EPA;User ID=appUsers;PWD=appusers;Application Name=EPA";
+            System.Data.IDbConnection cn = new SqlConnection(ConntionSTR);
+            System.Data.DataSet myDataSet1 = new System.Data.DataSet();
+
+            System.Data.IDbDataAdapter myDataAdapter = new System.Data.SqlClient.SqlDataAdapter();
+            //  System.Data.IDataReader myDataReaderI = null;
+            System.Data.IDbCommand cmd = cn.CreateCommand();
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            System.Data.IDbDataParameter IDPara = new SqlParameter();
+            System.Data.IDbDataParameter myParameter = cmd.CreateParameter();
+            cmd.Parameters.Add(IDPara);
+
+            try
+            {         
+                cn.Open();
+                myDataAdapter.SelectCommand = cmd;
+                myDataAdapter.Fill(myDataSet1);
+                return myDataSet1;
+                // myDataReaderI = cmd.ExecuteReader(); return myDataReaderI;
+            }
+            catch (Exception ex)
+            {
+                string sm = ex.Message;
+                return null;
+            }
+            finally
+            {
+                 cn.Close();
+            }
         }
         public static System.Data.IDbDataParameter SetParameter(System.Data.IDbCommand cmd, string pName, System.Data.DbType pType, int pSize, object pValue)
         {

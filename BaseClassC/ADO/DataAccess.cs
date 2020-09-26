@@ -6,7 +6,7 @@ using System.Data.OleDb;
 using System.Security;
 using Microsoft.Win32;
 using System.Data;
-namespace MyCommon
+namespace MyADO
 {
     public struct MyParameterRS
     {

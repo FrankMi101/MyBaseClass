@@ -6,7 +6,7 @@ using System.Data.OleDb;
 using System.Security;
 using Microsoft.Win32;
 using System.Data;
-namespace MyCommon
+namespace MyADO
 {
    
 
@@ -279,6 +279,37 @@ namespace MyCommon
             myCommand.Parameters.Add(myPara);
         }
         public static void AddParametersSQL(System.Data.SqlClient.SqlCommand myCommand, SqlDbType type, int leng, string name, float value)
+        {
+            System.Data.SqlClient.SqlParameter myPara = new System.Data.SqlClient.SqlParameter(name, type);
+            myPara.Value = value;
+            myCommand.Parameters.Add(myPara);
+        }
+
+        public static void AddParametersSQL(System.Data.SqlClient.SqlCommand myCommand, SqlDbType type, string name, string value)
+        {
+            System.Data.SqlClient.SqlParameter myPara = new System.Data.SqlClient.SqlParameter(name, type);
+            myPara.Value = value;
+            myCommand.Parameters.Add(myPara);
+        }
+        public static void AddParametersSQL(System.Data.SqlClient.SqlCommand myCommand, SqlDbType type, string name, int value)
+        {
+            System.Data.SqlClient.SqlParameter myPara = new System.Data.SqlClient.SqlParameter(name, type);
+            myPara.Value = value;
+            myCommand.Parameters.Add(myPara);
+        }
+        public static void AddParametersSQL(System.Data.SqlClient.SqlCommand myCommand, SqlDbType type,  string name, Byte[] value)
+        {
+            System.Data.SqlClient.SqlParameter myPara = new System.Data.SqlClient.SqlParameter(name, type);
+            myPara.Value = value;
+            myCommand.Parameters.Add(myPara);
+        }
+        public static void AddParametersSQL(System.Data.SqlClient.SqlCommand myCommand, SqlDbType type, string name, DateTime value)
+        {
+            System.Data.SqlClient.SqlParameter myPara = new System.Data.SqlClient.SqlParameter(name, type);
+            myPara.Value = value;
+            myCommand.Parameters.Add(myPara);
+        }
+        public static void AddParametersSQL(System.Data.SqlClient.SqlCommand myCommand, SqlDbType type, string name, float value)
         {
             System.Data.SqlClient.SqlParameter myPara = new System.Data.SqlClient.SqlParameter(name, type);
             myPara.Value = value;

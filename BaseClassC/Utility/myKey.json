@@ -1,0 +1,16 @@
+{
+  "EncryptionKey": [
+    {
+      "Action": "Basic",
+      "PIV": "SuFjcEmp/TE=",
+      "PKey": "KIPSToILGp6fl+3gXJvMsN4IajizYBBT"
+    },
+
+    {
+      "Action": "Advance",
+      "PIV": "SuFjcEmp/TE=",
+      "PKey": "KIPSToILGp6fl+3gXJvMsN4IajizYBBT"
+    } 
+  ]
+}
+ 
