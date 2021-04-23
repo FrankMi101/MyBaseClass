@@ -24,16 +24,16 @@ namespace MyDapper
             }
 
         }
-        public List<T> ListOfT(string db, string sp, object parameter)
+        public List<T> ListOfT(string db,string sp, object parameter)
         {
-            string conDbStr = DBConnectionHelper.ConnectionSTR(db);
+            string conDbStr =  DBConnectionHelper.ConnectionSTR(db);
             using (IDbConnection connection = new SqlConnection(conDbStr))
             {
                 string SP = GetParamerters(sp, parameter);
                 return connection.Query<T>(SP, parameter).ToList();
             }
 
-        }
+        } 
         public T ValueOfT(string sp, object parameter)
         {
 
@@ -45,8 +45,8 @@ namespace MyDapper
             }
 
         }
-
-        public T ValueOfT(string db, string sp, object parameter)
+ 
+        public T ValueOfT(string db,string sp, object parameter)
         {
             string conDbStr = DBConnectionHelper.ConnectionSTR(db);
             using (IDbConnection connection = new SqlConnection(conDbStr))

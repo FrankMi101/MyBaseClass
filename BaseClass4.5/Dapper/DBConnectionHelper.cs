@@ -9,12 +9,11 @@ namespace MyDapper
 {
     public static class DBConnectionHelper
     {
-
         public static string ConnectionSTR()
         {
             string currentDB = ConfigurationManager.ConnectionStrings["currentDB"].ConnectionString;
             return ConnectionSTR(currentDB);
-         }
+        }
         public static string ConnectionSTR(string name)
         {
             string conStr = ConfigurationManager.ConnectionStrings[name].ConnectionString;
@@ -28,5 +27,5 @@ namespace MyDapper
                 return SymetricEncryption.GetDecryptedValue(conStr);
         }
     }
-
+  
 }
