@@ -16,8 +16,13 @@ namespace MyDapper
         }
         public static string ConnectionSTR(string name)
         {
-            string conStr = ConfigurationManager.ConnectionStrings[name].ConnectionString;
-            return GetConnStr(conStr);
+            if (name.Substring(0, 12) == "Data Source=")
+                return name;
+            else
+            {
+                string conStr = ConfigurationManager.ConnectionStrings[name].ConnectionString;
+                return GetConnStr(conStr);
+            }
         }
         private static string GetConnStr(string conStr)
         {
