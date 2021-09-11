@@ -28,12 +28,12 @@ namespace MyDapper
             return ConnectionSTR(currentDB);
         }
         public static string ConnectionSTR(string name)
-        {   // if connecttion string did not encryption. will return connection string value  
+        {   
             if (name.Substring(0, 12) == "Data Source=")
-                return name;
+                return name; // if name is direct DB connecttion string, just return original string  
             else
             {   
-                // decrypted encrypted connection string by using SymtricEncryption class,  
+                // get actual connection string from Web config file  
                 string conStr = ConfigurationManager.ConnectionStrings[name].ConnectionString;
                 return GetConnStr(conStr);
             }
@@ -42,8 +42,9 @@ namespace MyDapper
         private static string GetConnStr(string conStr)
         {
             if (conStr.Substring(0, 12) == "Data Source=")
-                return conStr;
+                return conStr;   // return non encrypted connection string ,  
             else
+                // decrypted encrypted connection string by using SymtricEncryption class,  
                 return SymetricEncryption.GetDecryptedValue(conStr);
         }
     }

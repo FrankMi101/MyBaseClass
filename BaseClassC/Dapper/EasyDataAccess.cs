@@ -19,9 +19,11 @@ namespace MyDapper
 
         public static List<T> ListOfT<T>(string db, string sp, object parameter)
         {
-            var da = new EasyGoData<T>();
-            return da.ListOfT(db, sp, parameter);
+            var da = new EasyGoData<T>(db);
+            return da.ListOfT(sp, parameter);
 
+           // var da = new EasyGoData<T>();
+           // return da.ListOfT(db, sp, parameter);
         }
 
         public static T ValueOfT<T>(string sp, object parameter)
@@ -33,9 +35,11 @@ namespace MyDapper
 
         public static T ValueOfT<T>(string db, string sp, object parameter)
         {
-            var da = new EasyGoData<T>();
-            return da.ValueOfT(db, sp, parameter);
+            var da = new EasyGoData<T>(db);
+            return da.ValueOfT(sp, parameter);
 
+        //    var da = new EasyGoData<T>();
+        //    return da.ValueOfT(db, sp, parameter);
         }
     }
 
@@ -50,8 +54,10 @@ namespace MyDapper
 
       public static List<T> ListOfT(string db,string sp, object parameter)
         {
-            var da = new EasyGoData<T>();
-            return da.ListOfT(db,sp, parameter);
+            var da = new EasyGoData<T>(db);
+            return da.ListOfT(sp, parameter);
+            // var da = new EasyGoData<T>();
+            //   return da.ListOfT(db,sp, parameter);
         }
 
         public static T ValueOfT(string sp, object parameter)
@@ -64,9 +70,11 @@ namespace MyDapper
 
         public static T ValueOfT(string db,string sp, object parameter)
         {
-            var da = new EasyGoData<T>();
-            return da.ValueOfT(db, sp, parameter);
+            var da = new EasyGoData<T>(db);
+            return da.ValueOfT(sp, parameter);
 
+         //   var da = new EasyGoData<T>();
+         //   return da.ValueOfT(db, sp, parameter);
         }
     }
 

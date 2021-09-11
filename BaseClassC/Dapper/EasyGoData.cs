@@ -19,8 +19,14 @@ namespace MyDapper
      ********************************************************************************/
     public class EasyGoData<T>
     {
-        readonly string _conStr = DBConnectionHelper.ConnectionSTR();
+        readonly string _conStr; // = DBConnectionHelper.ConnectionSTR();
 
+        public EasyGoData() {
+            _conStr = DBConnectionHelper.ConnectionSTR();
+        }
+        public EasyGoData(string db) {
+            _conStr = DBConnectionHelper.ConnectionSTR(db);
+        }
         public List<T> ListOfT(string sp, object parameter)
         {
             // db connection string is default in Application Web config file 
