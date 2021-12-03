@@ -71,11 +71,14 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dapper\DapperCommandType.cs" />
+    <Compile Include="Dapper\EasyDataAccessAsync.cs" />
     <Compile Include="Dapper\EasyGoData.cs" />
     <Compile Include="Dapper\CommonExcute.cs" />
     <Compile Include="Dapper\DBConnectionHelper.cs" />
     <Compile Include="Dapper\EasyDataAccess.cs" />
     <Compile Include="Dapper\EasyDataAccessExecute.cs" />
+    <Compile Include="Dapper\EasyGoDataAsync.cs" />
     <Compile Include="Dapper\GeneralDataAccess.cs" />
     <Compile Include="ADO\DataAccessSQL.cs" />
     <Compile Include="ADO\DataAccessDB.cs" />

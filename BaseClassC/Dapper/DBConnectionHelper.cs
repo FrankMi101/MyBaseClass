@@ -21,27 +21,37 @@ namespace MyDapper
     ********************************************************************************/
     public static class DBConnectionHelper
     {
-
+        public static string CurrentDB()
+        {
+            return ConfigurationManager.ConnectionStrings["currentDB"].ConnectionString;
+        }
         public static string ConnectionSTR()
         {
-            string currentDB = ConfigurationManager.ConnectionStrings["currentDB"].ConnectionString;
-            return ConnectionSTR(currentDB);
+            try
+            {            
+                var currentDB = ConfigurationManager.ConnectionStrings["currentDB"].ConnectionString;
+                return ConnectionSTR(currentDB);
+            }
+            catch (Exception ex)
+            {
+                return ConnectionSTR("Default");
+            }
         }
         public static string ConnectionSTR(string name)
-        {   
-            if (name.Substring(0, 12) == "Data Source=")
+        {
+            // return ""; for failure test purpose,  Comments all below 
+            if (name.Contains("Data Source="))
                 return name; // if name is direct DB connecttion string, just return original string  
             else
-            {   
+            {
                 // get actual connection string from Web config file  
                 string conStr = ConfigurationManager.ConnectionStrings[name].ConnectionString;
                 return GetConnStr(conStr);
             }
-
         }
         private static string GetConnStr(string conStr)
         {
-            if (conStr.Substring(0, 12) == "Data Source=")
+            if (conStr.Contains("Data Source="))
                 return conStr;   // return non encrypted connection string ,  
             else
                 // decrypted encrypted connection string by using SymtricEncryption class,  

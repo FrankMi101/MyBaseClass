@@ -1,10 +1,9 @@
 ﻿using Dapper;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace MyDapper
 {
@@ -18,34 +17,29 @@ namespace MyDapper
      *            1.0.2.0    Date: 2021/11/30  extend method to handel Dapper CommentType
      *            1.0.3.0    Date: 2021/11/30  extend method to add Async await 
     ********************************************************************************/
-    public class EasyGoData<T>
+    public class EasyGoDataAsync<T>
     {
         readonly string _conStr = DBConnectionHelper.ConnectionSTR();
-        readonly CommandType _type = CommandType.Text;
+        readonly CommandType _type = CommandType.Text; // = CommondType sp / Text;
 
-        public EasyGoData()
+        public EasyGoDataAsync()
         {
         }
-        public EasyGoData(CommandType type)
+        public EasyGoDataAsync(CommandType type)
         {
             this._type = type;
         }
-        public string GetDapperCommandType()
-        {
-            if (_type == CommandType.Text) return "Text";
-            if (_type == CommandType.TableDirect) return "Table";
-            return "SP";
-        }
-        public List<T> ListOfT(string sp, object parameter)
+        public async Task<List<T>> ListOfT(string sp, object parameter)
         {
             // db connection string is default in Application Web config file 
-
-            using (IDbConnection connection = new SqlConnection(_conStr))
-            {
-                string _sp = GetSPParamerterStrFromObject(_type, sp, parameter);
-  
-                return connection.Query<T>(_sp, parameter, commandType: _type).ToList();
-            }
+            //using (IDbConnection connection = new SqlConnection(_conStr))
+            //{
+            //    string _sp = getParamerterStrFromObject(_type, sp, parameter);
+            //    var result = await connection.QueryAsync<T>(_sp, parameter, commandType: _type);
+            //    return result.ToList();
+            //}
+            string db = DBConnectionHelper.CurrentDB();
+            return await ListOfT(db, sp, parameter);
         }
 
         // ListOfT method will return a list of any <T> type class
@@ -53,15 +47,16 @@ namespace MyDapper
         // parameter is one row list of any of class type.    
         // <T> can be any class type, such as String, Int, Student, Class
         // The method use Dapper Query method of Connection 
-        public List<T> ListOfT(string db, string sp, object parameter)
+        public async Task<List<T>> ListOfT(string db, string sp, object parameter)
         {
             // get acture database connection string by name (db)
             string conDbStr = DBConnectionHelper.ConnectionSTR(db);
             // using Dapper connection object get get data
             using (IDbConnection connection = new SqlConnection(conDbStr))
             {
-                string _sp = GetSPParamerterStrFromObject(_type, sp, parameter); // get parameters if the sp does not provide parameter string with @
-                return connection.Query<T>(_sp, parameter, commandType: _type).ToList();
+                string _sp = getParamerterStrFromObject(_type, sp, parameter); // get parameters if the sp does not provide parameter string with @
+                var result = await connection.QueryAsync<T>(_sp, parameter, commandType: _type);
+                return result.ToList();
             }
 
         }
@@ -71,69 +66,58 @@ namespace MyDapper
         // parameter is one row list of any of class type.    
         // <T> can be any type, such as String, Int, date, bool
         // The method use Dapper QuerySingle method of Connection 
-        public T ValueOfT(string sp, object parameter)
+        public async Task<T> ValueOfT(string sp, object parameter)
         {
             using (IDbConnection connection = new SqlConnection(_conStr))
             {
-                string SP = GetSPParamerterStrFromObject(_type, sp, parameter);
-                return connection.QuerySingle<T>(SP, parameter, commandType: _type);
+                string SP = getParamerterStrFromObject(_type, sp, parameter);
+                var result = await connection.QuerySingleAsync<T>(SP, parameter, commandType: _type);
+                return result;
             }
         }
 
-        public T ValueOfT(string db, string sp, object parameter)
+        public async Task<T> ValueOfT(string db, string sp, object parameter)
         {
             string conDbStr = DBConnectionHelper.ConnectionSTR(db);
             using (IDbConnection connection = new SqlConnection(conDbStr))
             {
-                string SP = GetSPParamerterStrFromObject(_type, sp, parameter);
-                return connection.QuerySingle<T>(SP, parameter, commandType: _type);
+                string SP = getParamerterStrFromObject(_type, sp, parameter);
+                var result = await connection.QuerySingleAsync<T>(SP, parameter, commandType: _type);
+                return result;
             }
         }
-        public string GetSPParamerterStrFromObject(CommandType type, string sp, object obj)
+        private static string getParamerterStrFromObject(CommandType type, string sp, object obj)
         {
-            try
-            {
-                if (sp.Contains("@") || type == CommandType.StoredProcedure)
-                    return sp;
-                else
-                    return sp + getParameterStrFromParameterObj(obj);
-            }
-            catch (Exception ex)
-            {
+
+            if (sp.Contains("@") || type == CommandType.StoredProcedure)
                 return sp;
-            }
+            else
+                return sp + getParameterStrFromParameterObj(obj);
         }
 
-        private string getParameterStrFromParameterObj(object obj)
+        private static string getParameterStrFromParameterObj(object obj)
         {
-            try
+            var parameterObj = PropertiesOfType<string>(obj);
+            int x = 0;
+            var para = "";
+            foreach (var item in parameterObj)
             {
-                var parameterObj = PropertiesOfType<string>(obj);
-                int x = 0;
-                var para = "";
-                foreach (var item in parameterObj)
+                if (item.Value != null)
                 {
-                    if (item.Value != null)
-                    {
-                        if (x == 0)
-                            para = " @" + item.Key;
-                        else
-                            para = para + ",@" + item.Key;
-                        x++;
-                    }
-                };
-                return para;
-            }
-            catch (Exception ex)
-            {
-                return "";
-            }
+                    if (x == 0)
+                        para = " @" + item.Key;
+                    else
+                        para = para + ",@" + item.Key;
+                    x++;
+                }
+            };
+            return para;
         }
-        private static IEnumerable<KeyValuePair<string, T>> PropertiesOfType<T>(object obj)
+        private static IEnumerable<KeyValuePair<string, T>> PropertiesOfType<S>(object obj)
         {
             // get parameter class type use LINQ query
             return from p in obj.GetType().GetProperties()
-                   where p.PropertyType == typeof(T)
+                   where p.PropertyType == typeof(S)
                    select new KeyValuePair<string, T>(p.Name, (T)p.GetValue(obj));
         }
     }

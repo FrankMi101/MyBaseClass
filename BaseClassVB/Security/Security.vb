@@ -187,11 +187,11 @@ Namespace TCDSB
                     Dim _initVector As String = CType(rk.GetValue("initVector"), String)
                     Dim _key As String = CType(rk.GetValue("key"), String)
 
-                    Dim dec As Decryptor
-                    dec = New Decryptor(EncryptionAlgorithm.TripleDes)
-                    dec.IV = Convert.FromBase64String(_initVector)
-                    Dim _conStringByte As Byte() = dec.Decrypt(Convert.FromBase64String(_ConString), Convert.FromBase64String(_key))
-                    _ConnectionString = Encoding.ASCII.GetString(_conStringByte)
+                    'Dim dec As Decryptor
+                    'dec = New Decryptor(EncryptionAlgorithm.TripleDes)
+                    'dec.IV = Convert.FromBase64String(_initVector)
+                    'Dim _conStringByte As Byte() = dec.Decrypt(Convert.FromBase64String(_ConString), Convert.FromBase64String(_key))
+                    '_ConnectionString = Encoding.ASCII.GetString(_conStringByte)
                     Return _ConnectionString
                 Catch e As Exception
                     Throw New Exception("Connection DeCrypt Error:" + e.Message)

@@ -1,7 +1,8 @@
 Imports System.Data.SqlClient
 Imports System.Data.OleDb
 Imports System.Security
-Imports Encryption
+Imports System.Security.Cryptography
+' Imports Encryption
 Imports System.Text
 Imports Microsoft.Win32
 Namespace TCDSB
@@ -296,11 +297,11 @@ Namespace TCDSB
                     Dim _initVector As String = rk.GetValue("initVector")
                     Dim _key As String = rk.GetValue("key")
 
-                    Dim dec As Decryptor
-                    dec = New Decryptor(EncryptionAlgorithm.TripleDes)
-                    dec.IV = Convert.FromBase64String(_initVector)
-                    Dim _conStringByte As Byte() = dec.Decrypt(Convert.FromBase64String(_ConString), Convert.FromBase64String(_key))
-                    _ConnectionString = Encoding.ASCII.GetString(_conStringByte)
+                    'Dim dec As Decryptor
+                    'dec = New Decryptor(EncryptionAlgorithm.TripleDes)
+                    'dec.IV = Convert.FromBase64String(_initVector)
+                    'Dim _conStringByte As Byte() = dec.Decrypt(Convert.FromBase64String(_ConString), Convert.FromBase64String(_key))
+                    '_ConnectionString = Encoding.ASCII.GetString(_conStringByte)
                     Return _ConnectionString
                 Catch e As Exception
                     Throw New Exception("Connection DeCrypt Error:" + e.Message)
@@ -509,11 +510,11 @@ Namespace TCDSB
                     Dim _initVector As String = rk.GetValue("initVector")
                     Dim _key As String = rk.GetValue("key")
 
-                    Dim dec As Decryptor
-                    dec = New Decryptor(EncryptionAlgorithm.TripleDes)
-                    dec.IV = Convert.FromBase64String(_initVector)
-                    Dim _conStringByte As Byte() = dec.Decrypt(Convert.FromBase64String(_ConString), Convert.FromBase64String(_key))
-                    _ConnectionString = Encoding.ASCII.GetString(_conStringByte)
+                    'Dim dec As Decryptor
+                    'dec = New Decryptor(EncryptionAlgorithm.TripleDes)
+                    'dec.IV = Convert.FromBase64String(_initVector)
+                    'Dim _conStringByte As Byte() = dec.Decrypt(Convert.FromBase64String(_ConString), Convert.FromBase64String(_key))
+                    '_ConnectionString = Encoding.ASCII.GetString(_conStringByte)
                     Return _ConnectionString
                 Catch e As Exception
                     Throw New Exception("Connection DeCrypt Error:" + e.Message)
